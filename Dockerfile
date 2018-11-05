@@ -1,4 +1,4 @@
-FROM haskell:7
+FROM haskell:8.4
 MAINTAINER Jan Philip Bernius <janphilip@bernius.net>
 
 # Set to Non-Interactive
@@ -14,16 +14,18 @@ RUN apt-get update && \
   lmodern \
   texlive-latex-base \
   texlive-fonts-recommended \
+  texlive-fonts-extra \
   texlive-generic-recommended \
-  texlive-lang-english \
-  texlive-lang-german \
+  texlive-lang-japanese \
   latex-xcolor \
   texlive-math-extra \
   texlive-latex-extra \
+  texlive-extra-utils \
   texlive-bibtex-extra \
   biber \
   fontconfig \
-  texlive-xetex && \
+  # texlive-xetex && \
+  texlive-luatex && \
   apt-get autoclean && apt-get --purge --yes autoremove && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
@@ -35,10 +37,8 @@ RUN cabal update && cabal install \
   pandoc-crossref
 
 # Set the locale
+# RUN update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja"
 RUN dpkg-reconfigure locales
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US:en
-ENV LC_ALL en_US.UTF-8
 
 # Export the output data
 WORKDIR /data
